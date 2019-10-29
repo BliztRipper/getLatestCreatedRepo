@@ -1,6 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was made for do the test from Appsynth By Arnon
 
-## Available Scripts
+## How to Run project
 
 In the project directory, you can run:
 
