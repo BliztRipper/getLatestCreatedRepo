@@ -15,6 +15,7 @@ function App() {
       <div className="navbar">
         <img className="icon" src={GithubIcon} alt="icon"/>
       </div>
+      <h1 className="repo-title">Most Starred Github Repositories in Last 30 days</h1>
       <Repositories/>
     </div>
     </Fragment>
