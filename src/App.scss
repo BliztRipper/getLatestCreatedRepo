@@ -12,3 +12,67 @@
   display: block;
   margin: 0 auto;
 }
+
+.loader{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color:#fff;
+}
+
+.list-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  margin: 2rem auto;
+  background-color:#fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  max-width: 50%;
+}
+
+.repo{
+  &-title{
+    text-align: center;
+    color: #fff;
+  }
+  &-information{
+    max-width: 450px;
+    padding: 0 1.5rem;
+    margin: 0 auto;
+  }
+  &-avatar{
+    &-item{
+      max-width: 350px;
+      height: auto;
+      display: block;
+      border-radius: 50%;
+      border: 2px solid #e5e5e5;
+    }
+  }
+  &-stars,&-forks,&-lang,&-submitted{
+    margin-top: 1rem;
+  }
+  &-link,&-ownerProfile{
+    color:#30bda1;
+    text-transform: uppercase;
+  }
+}
+
+@media(max-width:768px){
+  .list-item{
+    padding: 1rem;
+    margin: 1rem;
+    max-width: 100%;
+  }
+  .repo{
+    &-avatar{
+      &-item{
+        max-width: 240px;
+      }
+    }
+  }
+}
