@@ -35,7 +35,6 @@ function Repositories(){
         }))
         setRepos(reposList)
         setIsLoading(false);
-        console.log(result.data.items);
         setTimeout(() => {
           setIsLoading(false);
         }, 3000);
@@ -61,7 +60,7 @@ function Repositories(){
     return(
       <Fragment>
         {repos.map(repo => (
-          <li key={repo.id}>
+          <li className="list-item" key={repo.id}>
             <RepoList {...repo} />
           </li>
         ))}
