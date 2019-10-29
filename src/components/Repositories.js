@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import { dateFormated } from "../utilities/dateFormated";
 import RepoList from './RepoList'
 import axios from 'axios';
+import Loader from './Loader'
 
 function Repositories(){
   const [repos, setRepos] = useState()
@@ -15,43 +16,45 @@ function Repositories(){
   
   useEffect(() => {
     if (isLoading){
+      const fetchMoreData = async() =>{
+        setPerPage(p => p+10)
+        const url = await `https://api.github.com/search/repositories?q=created:>${dateFormated()}&sort=stars&order=desc&per_page=${perPage}`
+        const result = await axios(url);
+        const reposList = await result.data.items.map(repo => ({
+          name: repo.name,
+          description: repo.description,
+          stars: repo.stargazers_count,
+          forks: repo.forks,
+          language: repo.language,
+          id: repo.id,
+          avatar: repo.owner.avatar_url,
+          owner: repo.owner.login,
+          ownerProfile: repo.owner.html_url,
+          url: repo.html_url,
+          createdAt: repo.created_at
+        }))
+        setRepos(reposList)
+        setIsLoading(false);
+        console.log(result.data.items);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 3000);
+      }
       fetchMoreData()
     }
   }, [isLoading]);
 
   function handleScroll() {
+    // Get scroll event
     let scrollHeight = window.innerHeight + document.documentElement.scrollTop
+
+    //Get overall height
     let offsetHeight = document.documentElement.offsetHeight
-    if (scrollHeight == offsetHeight)
-    setIsLoading(true);
-  }
 
-  function fetchMoreData() {
-    setPerPage(perPage+10)
-    fetchData(perPage)
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }
-
-  const fetchData = async (perPage) =>{
-    const url = await `https://api.github.com/search/repositories?q=created:>${dateFormated()}&sort=stars&order=desc&per_page=${perPage}`
-    const result = await axios(url);
-    const reposList = await result.data.items.map(repo => ({
-      name: repo.name,
-      description: repo.description,
-      stars: repo.stargazers_count,
-      forks: repo.forks,
-      language: repo.language,
-      id: repo.id,
-      avatar: repo.owner.avatar_url,
-      owner: repo.owner.login,
-      issues: repo.open_issues,
-      url: repo.html_url,
-      createdAt: repo.created_at
-    }))
-    setRepos(reposList)
-    setIsLoading(false);
+    //Trigger fetch data when scroll to the bottom
+    if (scrollHeight === offsetHeight){
+      setIsLoading(true);
+    }
   }
 
   if(repos){
@@ -62,11 +65,11 @@ function Repositories(){
             <RepoList {...repo} />
           </li>
         ))}
-        {isLoading && <h1>Loading...</h1>}
+        {isLoading && <Loader/>}
       </Fragment>
     )
   } else {
-    return <h1>Loading</h1>
+    return <Loader/>
   }
 }
 export default Repositories
